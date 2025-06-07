@@ -1,19 +1,15 @@
+import os
 import streamlit as st
 import google.generativeai as genai
 
-
-
-
-api_key = "AIzaSyA5QJnnRhdhgtNENE7Mh7h9jmtnrKZEP24" 
-genai.configure(api_key=api_key)
-
 try:
-    
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    genai.configure(api_key=os.environ.get("GEMINI_API_KEY", "SUA_CHAVE_AQUI"))  
 except Exception as e:
-    st.error(f"Erro ao carregar o modelo Gemini 'gemini-2.0-flash': {e}")
-    st.info("Verifique se o nome do modelo está correto e se sua chave API tem acesso a ele.")
+    st.error(f"Erro na configuração da API: {e}. Verifique se sua chave de API está correta.")
     st.stop()
+
+
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 def gerar_resposta_gemini(prompt_completo):
     try:
